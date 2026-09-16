@@ -1,0 +1,6 @@
+#!/bin/bash
+f=~/Pictures/$(date +%d%m%y%H%M%S).png
+case "$1" in
+    -r) grim -g "$(slurp)" "$f" ;;
+    *)  grim "$f" ;;
+esac && wl-copy --type image/png < "$f" && notify-send "Screenshot saved & copied" "$f"
