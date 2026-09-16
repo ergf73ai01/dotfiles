@@ -3,10 +3,8 @@ set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BACKUP_DIR="$HOME/.dotfiles-backup"
-
-mkdir -p "$BACKUP_DIR"
-mkdir -p "$HOME/.config"
-mkdir -p "$HOME/Scripts"
+PACKAGE_FILE="$DOTFILES/packages.txt"
+AUR_PACKAGE_FILE="$DOTFILES/aur-packages.txt"
 
 backup_path() {
     local target="$1"
@@ -67,10 +65,59 @@ ensure_template() {
     printf 'Generated: %s <- %s\n' "$target" "$source"
 }
 
+install_official_packages() {
+    [ -f "$PACKAGE_FILE" ] || {
+        echo "ERROR: falta $PACKAGE_FILE" >&2
+        exit 1
+    }
+
+    mapfile -t packages < <(
+        grep -vE '^[[:space:]]*#|^[[:space:]]*$' "$PACKAGE_FILE"
+    )
+
+    if [ "${#packages[@]}" -eq 0 ]; then
+        echo "No hay paquetes oficiales para instalar."
+        return
+    fi
+
+    echo "== Official packages =="
+    printf '  %s\n' "${packages[@]}"
+    echo
+
+    echo "Checking package availability..."
+    pacman -Sp --needed "${packages[@]}" >/dev/null
+
+    echo "Installing official packages..."
+    sudo pacman -S --needed "${packages[@]}"
+    echo
+}
+
+show_aur_packages() {
+    [ -f "$AUR_PACKAGE_FILE" ] || return
+
+    mapfile -t aur_packages < <(
+        grep -vE '^[[:space:]]*#|^[[:space:]]*$' "$AUR_PACKAGE_FILE"
+    )
+
+    [ "${#aur_packages[@]}" -gt 0 ] || return
+
+    echo "== AUR packages =="
+    echo "Not installed automatically:"
+    printf '  %s\n' "${aur_packages[@]}"
+    echo
+}
+
 echo "== dotfiles bootstrap =="
 echo "Repository: $DOTFILES"
 echo "Home:       $HOME"
 echo
+
+install_official_packages
+show_aur_packages
+
+mkdir -p "$BACKUP_DIR"
+mkdir -p "$HOME/.config"
+mkdir -p "$HOME/Scripts"
 
 # Static configuration
 ensure_link \

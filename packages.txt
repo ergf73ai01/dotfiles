@@ -22,11 +22,12 @@ libnotify
 brightnessctl
 
 # Audio
+pipewire
+pipewire-pulse
 wireplumber
 
 # Network
 networkmanager
-networkmanager-dmenu-git
 
 # Applications used by the desktop scripts
 thunar
