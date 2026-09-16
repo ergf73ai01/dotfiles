@@ -50,15 +50,14 @@ ensure_template() {
 
     if [ -L "$target" ]; then
         backup_path "$target"
-    elif [ -f "$target" ]; then
-        if cmp -s "$source" "$target"; then
-            printf 'OK:       %s\n' "$target"
-            return
-        fi
+        cp "$source" "$target"
+        printf 'Generated: %s <- %s\n' "$target" "$source"
+        return
+    fi
 
-        backup_path "$target"
-    elif [ -e "$target" ]; then
-        backup_path "$target"
+    if [ -e "$target" ]; then
+        printf 'OK:       %s\n' "$target"
+        return
     fi
 
     cp "$source" "$target"
