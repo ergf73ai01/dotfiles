@@ -1,6 +1,6 @@
 /* gtk-3.0 override — tints adw-gtk3-dark's named colours to match the
    ArchBang desktop palette (mango/waybar/rofi/mako/foot). Picked up
-   via gtk-modules=colorreload-gtk-module in settings.ini.
+   via gtk-modules=colorreload-gtk-module in settings.ini. */
 
 @define-color accent_color #adc6ff;
 @define-color accent_bg_color #adc6ff;
