@@ -1,0 +1,100 @@
+#!/bin/bash
+set -euo pipefail
+
+DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+BACKUP_DIR="$HOME/.dotfiles-backup"
+
+mkdir -p "$BACKUP_DIR"
+mkdir -p "$HOME/.config"
+mkdir -p "$HOME/Scripts"
+
+backup_if_needed() {
+    local target="$1"
+
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        local rel="${target#$HOME/}"
+        local backup="$BACKUP_DIR/$rel"
+
+        mkdir -p "$(dirname "$backup")"
+
+        if [ -e "$backup" ] || [ -L "$backup" ]; then
+            backup="${backup}.$(date +%Y%m%d-%H%M%S)"
+        fi
+
+        mv "$target" "$backup"
+        printf 'Backup: %s -> %s\n' "$target" "$backup"
+    fi
+}
+
+link_path() {
+    local source="$1"
+    local target="$2"
+
+    backup_if_needed "$target"
+    ln -s "$source" "$target"
+    printf 'Linked: %s -> %s\n' "$target" "$source"
+}
+
+copy_template() {
+    local source="$1"
+    local target="$2"
+
+    mkdir -p "$(dirname "$target")"
+
+    if [ -e "$target" ] || [ -L "$target" ]; then
+        backup_if_needed "$target"
+    fi
+
+    cp "$source" "$target"
+    printf 'Generated: %s -> %s\n' "$target" "$source"
+}
+
+echo "== dotfiles bootstrap =="
+echo "Repository: $DOTFILES"
+echo
+
+# Neovim
+link_path \
+    "$DOTFILES/config/nvim" \
+    "$HOME/.config/nvim"
+
+# Waybar: static configuration
+mkdir -p "$HOME/.config/waybar"
+link_path \
+    "$DOTFILES/config/waybar/config" \
+    "$HOME/.config/waybar/config"
+
+# Scripts tracked by Git
+for script in archbang-menu powermenu screenshot themebang; do
+    link_path \
+        "$DOTFILES/scripts/$script" \
+        "$HOME/Scripts/$script"
+done
+
+# Initial runtime configuration from templates.
+# themebang owns these generated files afterward.
+copy_template \
+    "$DOTFILES/templates/mango/config.conf" \
+    "$HOME/.config/mango/config.conf"
+
+copy_template \
+    "$DOTFILES/templates/waybar/style.css" \
+    "$HOME/.config/waybar/style.css"
+
+mkdir -p "$HOME/.config/rofi"
+copy_template \
+    "$DOTFILES/templates/rofi/theme.rasi" \
+    "$HOME/.config/rofi/theme.rasi"
+
+copy_template \
+    "$DOTFILES/templates/rofi/wallpaper.rasi" \
+    "$HOME/.config/rofi/wallpaper.rasi"
+
+mkdir -p "$HOME/.config/mako"
+copy_template \
+    "$DOTFILES/templates/mako/config" \
+    "$HOME/.config/mako/config"
+
+echo
+echo "Bootstrap completed."
+echo "Backups: $BACKUP_DIR"
