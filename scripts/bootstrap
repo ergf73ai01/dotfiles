@@ -118,7 +118,32 @@ mkdir -p "$BACKUP_DIR"
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/Scripts"
 
-# Static configuration
+# Static user configuration
+ensure_link \
+    "$DOTFILES/config/bash/bashrc" \
+    "$HOME/.bashrc"
+
+ensure_link \
+    "$DOTFILES/config/bash/bash_profile" \
+    "$HOME/.bash_profile"
+
+ensure_link \
+    "$DOTFILES/config/foot/foot.ini" \
+    "$HOME/.config/foot/foot.ini"
+
+ensure_link \
+    "$DOTFILES/config/gtk-3.0/gtk.css" \
+    "$HOME/.config/gtk-3.0/gtk.css"
+
+ensure_link \
+    "$DOTFILES/config/gtk-3.0/settings.ini" \
+    "$HOME/.config/gtk-3.0/settings.ini"
+
+ensure_link \
+    "$DOTFILES/config/networkmanager-dmenu/config.ini" \
+    "$HOME/.config/networkmanager-dmenu/config.ini"
+
+# Existing static configuration
 ensure_link \
     "$DOTFILES/config/nvim" \
     "$HOME/.config/nvim"
@@ -150,7 +175,7 @@ for script in archbang-menu powermenu screenshot themebang bootstrap; do
         "$HOME/Scripts/$script"
 done
 
-# Runtime files generated/managed by themebang
+# Runtime files generated/managed by ThemeBang
 ensure_template \
     "$DOTFILES/templates/mango/config.conf" \
     "$HOME/.config/mango/config.conf"

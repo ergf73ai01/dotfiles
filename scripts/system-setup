@@ -64,6 +64,18 @@ install_system_file \
     "$GREETD_DIR/gtkgreet.css"
 
 echo
+echo "== environment =="
+install_system_file \
+    "$DOTFILES/system/environment" \
+    "${SYSTEM_ROOT}/etc/environment"
+
+echo
+echo "== zram =="
+install_system_file \
+    "$DOTFILES/system/zram/zram-generator.conf" \
+    "${SYSTEM_ROOT}/etc/systemd/zram-generator.conf"
+
+echo
 echo "System setup completed."
 echo "Backups: $BACKUP_DIR"
 echo
