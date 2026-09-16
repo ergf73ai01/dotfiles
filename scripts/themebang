@@ -20,6 +20,7 @@ ROFI_RASI = HOME / ".config/rofi/theme.rasi"
 ROFI_PICKER = HOME / ".config/rofi/wallpaper.rasi"
 THUMB_DIR = HOME / ".cache" / "wallpaper-thumbs"
 MAKO_CONF = HOME / ".config/mako/config"
+TEMPLATE_DIR = Path(__file__).resolve().parents[1] / "templates"
 CONF_FILE = HOME / ".config/themebang.conf"
 UNIT_DIR = HOME / ".config/systemd/user"
 SERVICE_UNIT = UNIT_DIR / "themebang-rotate.service"
@@ -193,7 +194,7 @@ def get_palette(wallpaper):
 
 
 def theme_mango(p, wallpaper):
-    conf = MANGO_CONF.read_text()
+    conf = (TEMPLATE_DIR / "mango" / "config.conf").read_text()
     mapping = {
         "rootcolor": p["bg"], "focuscolor": p["accent"], "maximizescreencolor": p["surface"],
         "urgentcolor": p["urgent"], "scratchpadcolor": p["surface"], "globalcolor": p["fgdim"],
@@ -214,7 +215,7 @@ def theme_mango(p, wallpaper):
 
 
 def theme_waybar(p):
-    css = WAYBAR_CSS.read_text()
+    css = (TEMPLATE_DIR / "waybar" / "style.css").read_text()
     mapping = {
         "bg": p["bg"], "surface": p["surface"], "fg": p["fg"], "fg-dim": p["fgdim"],
         "accent": p["accent"], "red": p["urgent"], "green": p["green"],
@@ -234,8 +235,11 @@ def theme_rofi(p):
         "bg": p["bg"], "bg-alt": p["surface"], "fg": p["fg"], "fg-dim": p["fgdim"],
         "accent": p["accent"], "urgent": p["urgent"], "selected-fg": p["onaccent"],
     }
-    for path in (ROFI_RASI, ROFI_PICKER):
-        rasi = path.read_text()
+    for path, template in (
+        (ROFI_RASI, TEMPLATE_DIR / "rofi" / "theme.rasi"),
+        (ROFI_PICKER, TEMPLATE_DIR / "rofi" / "wallpaper.rasi"),
+    ):
+        rasi = template.read_text()
         for name, val in mapping.items():
             rasi = re.sub(
                 rf"(?m)^(\s*{re.escape(name)}:\s*)#[0-9a-fA-F]{{6}}([0-9a-fA-F]{{2}})?;",
@@ -244,7 +248,7 @@ def theme_rofi(p):
 
 
 def theme_mako(p):
-    conf = MAKO_CONF.read_text()
+    conf = (TEMPLATE_DIR / "mako" / "config").read_text()
     mapping = {
         "background-color": p["bg"], "text-color": p["fg"], "border-color": p["accent"],
     }
