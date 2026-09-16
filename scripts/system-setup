@@ -45,6 +45,37 @@ install_system_file() {
     printf 'Installed: %s <- %s\n' "$target" "$source"
 }
 
+ensure_system_template() {
+    local source="$1"
+    local target="$2"
+
+    if [ ! -f "$source" ]; then
+        echo "ERROR: falta $source" >&2
+        exit 1
+    fi
+
+    sudo mkdir -p "$(dirname "$target")"
+
+    if [ -L "$target" ]; then
+        backup_path "$target"
+        sudo install -D -m 0644 "$source" "$target"
+        printf 'Generated: %s <- %s\n' "$target" "$source"
+        return
+    fi
+
+    if [ -f "$target" ]; then
+        printf 'OK:       %s\n' "$target"
+        return
+    fi
+
+    if [ -e "$target" ]; then
+        backup_path "$target"
+    fi
+
+    sudo install -D -m 0644 "$source" "$target"
+    printf 'Generated: %s <- %s\n' "$target" "$source"
+}
+
 echo "== dotfiles system setup =="
 echo "Repository: $DOTFILES"
 echo "System root: $SYSTEM_ROOT"
@@ -59,7 +90,7 @@ install_system_file \
     "$DOTFILES/system/greetd/environments" \
     "$GREETD_DIR/environments"
 
-install_system_file \
+ensure_system_template \
     "$DOTFILES/templates/greetd/gtkgreet.css" \
     "$GREETD_DIR/gtkgreet.css"
 
