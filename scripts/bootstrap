@@ -127,6 +127,22 @@ ensure_link \
     "$DOTFILES/config/waybar/config" \
     "$HOME/.config/waybar/config"
 
+ensure_link \
+    "$DOTFILES/config/rofi/config.rasi" \
+    "$HOME/.config/rofi/config.rasi"
+
+ensure_link \
+    "$DOTFILES/config/systemd/user/themebang-rotate.service" \
+    "$HOME/.config/systemd/user/themebang-rotate.service"
+
+ensure_link \
+    "$DOTFILES/config/systemd/user/themebang-rotate.timer" \
+    "$HOME/.config/systemd/user/themebang-rotate.timer"
+
+ensure_template \
+    "$DOTFILES/config/themebang/themebang.conf" \
+    "$HOME/.config/themebang.conf"
+
 # Scripts tracked by Git
 for script in archbang-menu powermenu screenshot themebang bootstrap; do
     ensure_link \

@@ -1,0 +1,6 @@
+[Unit]
+Description=Rotate ArchBang wallpaper
+
+[Service]
+Type=oneshot
+ExecStart=%h/Scripts/themebang --rotate
