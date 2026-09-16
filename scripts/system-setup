@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SYSTEM_ROOT="${SYSTEM_ROOT:-/}"
+SYSTEM_ROOT="${SYSTEM_ROOT:-}"
 BACKUP_DIR="${SYSTEM_ROOT}/var/backups/dotfiles"
 GREETD_DIR="${SYSTEM_ROOT}/etc/greetd"
 
