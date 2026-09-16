@@ -8,7 +8,15 @@ GREETD_DIR="${SYSTEM_ROOT}/etc/greetd"
 
 backup_path() {
     local target="$1"
-    local rel="${target#/}"
+    local rel
+
+    if [ -n "$SYSTEM_ROOT" ]; then
+        rel="${target#"$SYSTEM_ROOT"}"
+        rel="${rel#/}"
+    else
+        rel="${target#/}"
+    fi
+
     local backup="$BACKUP_DIR/$rel"
 
     sudo mkdir -p "$(dirname "$backup")"
