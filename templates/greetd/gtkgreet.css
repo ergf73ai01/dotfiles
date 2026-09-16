@@ -1,0 +1,57 @@
+/* gtkgreet theme — matches the ArchBang desktop palette (mango/waybar/rofi/mako).
+   background-color is a fallback for if the image below fails to load; the
+   image itself is copied to this fixed, extension-less path at install time
+   (abinstall's install_archbang) since greetd's "greeter" user has no home
+   dir to read a per-user ~/Backgrounds file from. gtkgreet's session dropdown
+   is a separate GtkWindow and will show a cropped corner of the same image —
+   a known, accepted cosmetic quirk rather than a bug.
+
+window {
+    background-color: #181115;
+    background-image: url("/usr/share/backgrounds/archbang/current");
+    background-size: cover;
+    background-position: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+}
+
+box#body {
+    background-color: rgba(80, 67, 73, 0.9);
+    border: 2px solid #fbb0d7;
+    border-radius: 6px;
+    padding: 32px;
+}
+
+label {
+    color: #eddfe3;
+}
+
+entry {
+    background-color: #504349;
+    color: #eddfe3;
+    caret-color: #eddfe3;
+    border: 1px solid #d4c2c8;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+entry:focus {
+    border-color: #fbb0d7;
+}
+
+button {
+    background-color: #fbb0d7;
+    color: #511d3d;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 14px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #fbb0d7;
+}
+
+combobox {
+    color: #eddfe3;
+}

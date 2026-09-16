@@ -1,0 +1,8 @@
+[terminal]
+vt = 1
+
+[default_session]
+command = "cage -s -- gtkgreet -s /etc/greetd/gtkgreet.css"
+user = "greeter"
+# greetd-greeter has no matching /etc/pam.d file; reuse the "greetd" PAM service instead
+service = "greetd"
