@@ -1,0 +1,18 @@
+# Sistema / temporales
+*~
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Secretos / credenciales
+.env
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Cachés
+.cache/
