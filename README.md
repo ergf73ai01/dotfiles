@@ -64,8 +64,26 @@ No se instala automáticamente.
 ## ZRAM
 
 Configuración actual: `zram-size = ram`, compresión `zstd`, prioridad `100`.
-
 ## Verificación
+
+Para comprobar la instalación actual:
+
+    ./scripts/verify
+
+Esta comprobación valida symlinks, archivos runtime, comandos,
+scripts, sintaxis, procesos, servicios, ZRAM y paquetes oficiales.
+
+Para comprobar que el repositorio puede reconstruir una instalación
+desde cero sin modificar el sistema real:
+
+    ./scripts/rebuild-test
+
+`rebuild-test` crea una instalación temporal dentro de `/tmp`, utiliza
+comandos simulados para `pacman` y operaciones privilegiadas, ejecuta
+`bootstrap` y `system-setup`, comprueba la preservación de archivos
+runtime y verifica la idempotencia.
+
+Comprobaciones manuales útiles:
 
     git status
     mango -p
@@ -76,5 +94,14 @@ Servicios principales: `greetd`, `NetworkManager`, `pipewire`,
 
 ## Estado
 
-La configuración ha sido probada mediante una reconstrucción controlada
-desde un clon limpio. El repositorio debe terminar limpio después de los cambios.
+El repositorio cuenta con dos niveles de verificación:
+
+`./scripts/verify` comprueba el estado de la instalación actual.
+
+`./scripts/rebuild-test` comprueba que la configuración puede
+reconstruirse de forma controlada en un entorno temporal.
+
+La versión estable actual está marcada con `v1.0.0`.
+
+Los cambios posteriores a ese checkpoint se desarrollan en `main`
+y deben mantener el repositorio limpio y las pruebas pasando.
