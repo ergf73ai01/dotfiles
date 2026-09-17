@@ -49,3 +49,4 @@ fh() {
 
 # Bindings for fh
 bind -x '"\C-h": fh'
+g() { ssh-add -l >/dev/null 2>&1 || { eval "$(ssh-agent -s)" >/dev/null && ssh-add ~/.ssh/id_ed25519; }; }
