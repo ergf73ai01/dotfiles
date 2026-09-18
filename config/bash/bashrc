@@ -2,3 +2,5 @@
 if [[ ":$PATH:" != *":$HOME/scripts:"* ]]; then
     export PATH="$PATH:$HOME/scripts"
 fi
+
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
