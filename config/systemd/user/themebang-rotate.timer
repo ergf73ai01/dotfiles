@@ -1,9 +1,0 @@
-[Unit]
-Description=Rotate ArchBang wallpaper (timer)
-
-[Timer]
-OnBootSec=60
-OnUnitActiveSec=900
-
-[Install]
-WantedBy=timers.target
